@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2026 STMicroelectronics
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+#include <zephyr/dt-bindings/gpio/arduino-header-r3.h>
+#include <zephyr/dt-bindings/gpio/gpio.h>
+
+&arduino_i2c {
+	status = "okay";
+
+	stsafe_a120: stsafe-a120@20 {
+		compatible = "st,stsafe-a120";
+		reg = <0x20>;
+		/* The shield's PMOS makes the MCU-side A5 reset command active high. */
+		reset-gpios = <&arduino_header ARDUINO_HEADER_R3_A5 GPIO_ACTIVE_HIGH>;
+		status = "okay";
+	};
+};

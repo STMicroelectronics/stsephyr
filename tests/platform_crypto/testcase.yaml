@@ -1,0 +1,5 @@
+tests:
+  stsephyr.platform.crypto:
+    tags: [stsafe, crypto]
+    platform_allow: [native_sim, nucleo_l452re]
+    integration_platforms: [native_sim]

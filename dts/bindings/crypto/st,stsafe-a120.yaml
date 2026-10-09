@@ -1,0 +1,19 @@
+# Copyright (c) 2026 STMicroelectronics
+# SPDX-License-Identifier: Apache-2.0
+
+description: |
+  STMicroelectronics STSAFE-A120 authentication secure element connected over
+  I2C. The I2C address is part of the device personalization and is therefore
+  supplied by the reg property.
+
+compatible: "st,stsafe-a120"
+
+include: i2c-device.yaml
+
+on-bus: i2c
+
+properties:
+  reset-gpios:
+    type: phandle-array
+    required: true
+    description: GPIO connected to the active-low STSAFE-A120 reset input.

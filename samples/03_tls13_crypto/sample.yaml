@@ -1,0 +1,18 @@
+sample:
+  name: STSAFE-A120 TLS 1.3 cryptography experiment
+  description: Offline TLS 1.3 key schedule and records in the STSAFE-A120, checked by a mock peer
+
+common:
+  tags: [security, i2c, stsafe, tls]
+  platform_allow: [nucleo_l452re]
+  integration_platforms: [nucleo_l452re]
+  extra_args: [SHIELD=x_nucleo_ese01a1]
+
+tests:
+  sample.stsephyr.tls13_crypto:
+    build_only: true
+    extra_configs:
+      - CONFIG_SAMPLE_STSAFE_ALLOW_TLS_SLOT_WRITES=y
+      # Dummy keys so that the whole flow is compiled and linked; never flashed.
+      - CONFIG_SAMPLE_STSAFE_HOST_MAC_KEY_HEX="00112233445566778899AABBCCDDEEFF"
+      - CONFIG_SAMPLE_STSAFE_HOST_CIPHER_KEY_HEX="FFEEDDCCBBAA99887766554433221100"

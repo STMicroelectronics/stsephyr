@@ -1,0 +1,10 @@
+# Template for Twister hardware tests. Copy to hardware-map.local.yml (ignored
+# by git) and fill in your ST-LINK serial number and serial port.
+- connected: true
+  fixtures: [stsafe_a120]
+  id: "REPLACE_WITH_STLINK_SERIAL"
+  platform: nucleo_l452re
+  product: STM32 STLink
+  runner: stm32cubeprogrammer
+  serial: "REPLACE_WITH_SERIAL_PORT"
+  baud: 115200

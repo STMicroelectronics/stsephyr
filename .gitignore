@@ -1,0 +1,13 @@
+build/
+build-*/
+twister-out*/
+.cache/
+.west/
+.venv/
+modules/
+*.log
+.vscode/
+*.local.conf
+*.local.yml
+private.conf
+__pycache__/

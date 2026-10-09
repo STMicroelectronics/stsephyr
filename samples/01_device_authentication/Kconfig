@@ -1,0 +1,14 @@
+# Copyright (c) 2026 STMicroelectronics
+# SPDX-License-Identifier: Apache-2.0
+
+mainmenu "STSAFE-A120 device authentication sample"
+
+config SAMPLE_STSAFE_ALLOW_SIGNATURE
+	bool "Sign a challenge with private-key slot 0"
+	help
+	  Each signature decrements the slot 0 usage limit and the global
+	  private-key usage limit, unless they are set to unlimited (0xFFFF) by
+	  the device personalization. The slot limit cannot be read back, so this
+	  step is opt-in.
+
+source "Kconfig.zephyr"

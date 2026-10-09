@@ -1,0 +1,202 @@
+# Copyright (c) 2026 STMicroelectronics
+# SPDX-License-Identifier: Apache-2.0
+
+menuconfig STSEPHYR
+	bool "STSELib port for STSAFE-A120"
+	default y if DT_HAS_ST_STSAFE_A120_ENABLED
+	depends on DT_HAS_ST_STSAFE_A120_ENABLED
+	select I2C
+	select GPIO
+	select CSPRNG_NEEDED
+	select PSA_CRYPTO
+	select PSA_WANT_KEY_TYPE_ECC_PUBLIC_KEY
+	select PSA_WANT_KEY_TYPE_ECC_KEY_PAIR_IMPORT
+	select PSA_WANT_KEY_TYPE_ECC_KEY_PAIR_EXPORT
+	select PSA_WANT_KEY_TYPE_ECC_KEY_PAIR_GENERATE
+	select PSA_WANT_KEY_TYPE_ECC_KEY_PAIR_DERIVE
+	select PSA_WANT_KEY_TYPE_AES
+	select PSA_WANT_KEY_TYPE_HMAC
+	select PSA_WANT_ALG_ECDSA
+	select PSA_WANT_ALG_ECDH
+	select PSA_WANT_ALG_CMAC
+	select PSA_WANT_ALG_CBC_NO_PADDING
+	select PSA_WANT_ALG_ECB_NO_PADDING
+	select PSA_WANT_ALG_HMAC
+	select PSA_WANT_ALG_SHA_256
+	select PSA_WANT_ALG_SHA_384
+	select PSA_WANT_ALG_SHA_512
+	help
+	  Zephyr driver for STSAFE-A120 secure elements connected over I2C,
+	  built on ST's STSELib middleware. Enabled automatically when the
+	  devicetree contains an enabled "st,stsafe-a120" node.
+
+if STSEPHYR
+
+config STSEPHYR_INIT_PRIORITY
+	int "Device initialization priority"
+	default 80
+	range 0 99
+	help
+	  POST_KERNEL initialization priority. The I2C and GPIO controllers must
+	  already be ready.
+
+config STSEPHYR_MAX_INSTANCES
+	int "Maximum STSAFE-A120 instances"
+	default 1
+	range 1 8
+	help
+	  Number of STSAFE-A120 devicetree nodes supported. All devices share
+	  one lock because STSELib has global state.
+
+config STSEPHYR_LOCK_TIMEOUT_MS
+	int "Default device lock timeout in milliseconds"
+	default 5000
+	range 1 60000
+	help
+	  Convenience value for applications calling stsephyr_acquire(); the
+	  samples use it. The driver itself does not.
+
+config STSEPHYR_RESET_ASSERT_MS
+	int "Reset pulse length in milliseconds"
+	default 1
+	range 1 1000
+
+config STSEPHYR_USE_RSP_POLLING
+	bool "Poll for command responses"
+	default y
+	help
+	  Read the response as soon as the device is ready instead of waiting
+	  for the worst-case command execution time.
+
+if STSEPHYR_USE_RSP_POLLING
+
+config STSEPHYR_MAX_POLLING_RETRY
+	int "Maximum response polling attempts"
+	default 100
+	range 1 1000
+
+config STSEPHYR_FIRST_POLLING_INTERVAL_MS
+	int "Delay before the first response attempt"
+	default 10
+	range 1 1000
+
+config STSEPHYR_POLLING_RETRY_INTERVAL_MS
+	int "Delay between response polling attempts"
+	default 10
+	range 1 1000
+
+endif
+
+menu "STSELib algorithms"
+
+config STSEPHYR_ECC_NIST_P256
+	bool "NIST P-256"
+	default y
+	select PSA_WANT_ECC_SECP_R1_256
+
+config STSEPHYR_ECC_NIST_P384
+	bool "NIST P-384"
+	default y
+	select PSA_WANT_ECC_SECP_R1_384
+
+config STSEPHYR_ECC_NIST_P521
+	bool "NIST P-521"
+	default n
+	select PSA_WANT_ECC_SECP_R1_521
+
+config STSEPHYR_ECC_BRAINPOOL_P256
+	bool "Brainpool P-256"
+	default n
+	select PSA_WANT_ECC_BRAINPOOL_P_R1_256
+
+config STSEPHYR_ECC_BRAINPOOL_P384
+	bool "Brainpool P-384"
+	default n
+	select PSA_WANT_ECC_BRAINPOOL_P_R1_384
+
+config STSEPHYR_ECC_BRAINPOOL_P512
+	bool "Brainpool P-512"
+	default n
+	select PSA_WANT_ECC_BRAINPOOL_P_R1_512
+
+config STSEPHYR_ECC_CURVE25519
+	bool "Curve25519"
+	default n
+	select PSA_WANT_ECC_MONTGOMERY_255
+
+config STSEPHYR_ECC_ED25519
+	bool "Ed25519/EdDSA"
+	default n
+	help
+	  Enable STSELib support for Ed25519 keys and pure EdDSA commands on
+	  STSAFE-A120. This also builds the west-managed Monocypher Ed25519
+	  implementation so the MCU can verify EdDSA signatures and Ed25519
+	  certificate chains. Monocypher is not linked when this option is
+	  disabled.
+
+config STSEPHYR_HASH_SHA256
+	bool "SHA-256"
+	default y
+	select PSA_WANT_ALG_SHA_256
+
+config STSEPHYR_HASH_SHA384
+	bool "SHA-384"
+	default y
+	select PSA_WANT_ALG_SHA_384
+
+config STSEPHYR_HASH_SHA512
+	bool "SHA-512"
+	default y
+	select PSA_WANT_ALG_SHA_512
+
+config STSEPHYR_HASH_SHA3_256
+	bool "SHA3-256"
+	default n
+	select PSA_WANT_ALG_SHA3_256
+
+config STSEPHYR_HASH_SHA3_384
+	bool "SHA3-384"
+	default n
+	select PSA_WANT_ALG_SHA3_384
+
+config STSEPHYR_HASH_SHA3_512
+	bool "SHA3-512"
+	default n
+	select PSA_WANT_ALG_SHA3_512
+
+endmenu
+
+config STSEPHYR_HOST_SESSION
+	bool "STSAFE host secure sessions"
+	default n
+	help
+	  STSELib host sessions: commands authenticated (C-MAC) and optionally
+	  encrypted with the host keys. The keys must already be provisioned in
+	  the device; this option does not provision anything.
+
+config STSEPHYR_HOST_KEY_ESTABLISHMENT
+	bool "Host key establishment helpers"
+	help
+	  STSELib functions that establish host keys with ECDH.
+
+config STSEPHYR_HOST_KEY_WRAPPED_PROVISIONING
+	bool "Wrapped host-key provisioning helpers"
+	help
+	  STSELib functions that provision host keys wrapped with a KEK.
+
+config STSEPHYR_SYMMETRIC_KEY_ESTABLISHMENT
+	bool "Symmetric-key establishment helpers"
+	help
+	  STSELib functions that establish symmetric keys with ECDH.
+
+config STSEPHYR_SYMMETRIC_KEY_WRAPPED_PROVISIONING
+	bool "Wrapped symmetric-key provisioning helpers"
+	help
+	  STSELib functions that provision symmetric keys wrapped with a KEK.
+
+module = STSEPHYR
+module-str = stsephyr
+module-help = STSAFE-A120 driver logging
+source "subsys/logging/Kconfig.template.log_config"
+
+endif
