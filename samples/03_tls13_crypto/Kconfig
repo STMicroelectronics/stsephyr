@@ -1,0 +1,19 @@
+# Copyright (c) 2026 STMicroelectronics
+# SPDX-License-Identifier: Apache-2.0
+
+mainmenu "STSAFE-A120 TLS 1.3 cryptography experiment"
+
+config SAMPLE_STSAFE_ALLOW_TLS_SLOT_WRITES
+	bool "Write and erase STSAFE-A120 symmetric key slots"
+	help
+	  The experiment derives up to nine keys into persistent symmetric key
+	  slots, erases them at the end, and advances the host C-MAC counter.
+	  A reset or power loss during the run can leave keys behind.
+
+config SAMPLE_STSAFE_HOST_MAC_KEY_HEX
+	string "Provisioned AES-128 host MAC key (32 hex characters)"
+
+config SAMPLE_STSAFE_HOST_CIPHER_KEY_HEX
+	string "Provisioned AES-128 host cipher key (32 hex characters)"
+
+source "Kconfig.zephyr"

@@ -1,0 +1,41 @@
+manifest:
+  version: "1.2"
+
+  remotes:
+    - name: zephyrproject-rtos
+      url-base: https://github.com/zephyrproject-rtos
+    - name: stmicroelectronics
+      url-base: https://github.com/STMicroelectronics
+    - name: monocypher
+      url-base: https://github.com/LoupVaillant
+
+  projects:
+    - name: zephyr
+      remote: zephyrproject-rtos
+      revision: v4.4.0
+      import:
+        name-allowlist:
+          - cmsis
+          - cmsis_6
+          - hal_stm32
+          - mbedtls
+          - tf-psa-crypto
+
+    - name: stselib
+      remote: stmicroelectronics
+      repo-path: STSELib
+      revision: v1.1.11
+      path: modules/lib/stselib
+      groups:
+        - stse
+
+    - name: monocypher
+      remote: monocypher
+      repo-path: Monocypher
+      revision: 4.0.3
+      path: modules/crypto/monocypher
+      groups:
+        - crypto
+
+  self:
+    path: stsephyr

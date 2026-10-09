@@ -1,0 +1,17 @@
+sample:
+  name: STSAFE-A120 Ed25519 verification
+  description: Verify an RFC 8032 Ed25519 signature in the STSAFE-A120 and on the MCU
+
+common:
+  tags: [security, i2c, stsafe]
+  platform_allow: [nucleo_l452re]
+  integration_platforms: [nucleo_l452re]
+  extra_args: [SHIELD=x_nucleo_ese01a1]
+  harness: console
+  harness_config:
+    type: one_line
+    regex: ["PASS: 01_ed25519"]
+    fixture: stsafe_a120
+
+tests:
+  sample.stsephyr.ed25519: {}

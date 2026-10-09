@@ -1,0 +1,18 @@
+# Copyright (c) 2026 STMicroelectronics
+# SPDX-License-Identifier: Apache-2.0
+
+mainmenu "STSAFE-A120 secure data storage sample"
+
+config SAMPLE_DATA_ZONE
+	int "Data zone to read"
+	default 1
+	help
+	  Zone 1 is a free-read data zone in the ST evaluation personalization.
+
+config SAMPLE_COUNTER_ZONE
+	int "Counter zone to read"
+	default 5
+	help
+	  Zone 5 is a free-read counter zone in the ST evaluation personalization.
+
+source "Kconfig.zephyr"

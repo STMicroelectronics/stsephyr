@@ -1,0 +1,26 @@
+sample:
+  name: STSAFE-A120 hash
+  description: Compare STSAFE-A120 and MCU digests (SHA-256 and SHA3 variants)
+
+common:
+  tags: [security, i2c, stsafe]
+  platform_allow: [nucleo_l452re]
+  integration_platforms: [nucleo_l452re]
+  extra_args: [SHIELD=x_nucleo_ese01a1]
+  harness: console
+  harness_config:
+    type: one_line
+    regex: ["PASS: 01_hash"]
+    fixture: stsafe_a120
+
+tests:
+  sample.stsephyr.hash: {}
+  sample.stsephyr.hash.sha3_256:
+    extra_configs:
+      - CONFIG_SAMPLE_HASH_SHA3_256=y
+  sample.stsephyr.hash.sha3_384:
+    extra_configs:
+      - CONFIG_SAMPLE_HASH_SHA3_384=y
+  sample.stsephyr.hash.sha3_512:
+    extra_configs:
+      - CONFIG_SAMPLE_HASH_SHA3_512=y

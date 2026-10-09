@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2026 STMicroelectronics
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/* The Arduino SDA pin is PB9; the base board DTS otherwise selects PB7. */
+&arduino_i2c {
+	pinctrl-0 = <&i2c1_scl_pb8 &i2c1_sda_pb9>;
+};
+
+/* Required by the RNG domain clock selected for this STM32L452. */
+&clk_hsi48 {
+	status = "okay";
+};
+
+/* Required by STSELib device-authentication challenge generation. */
+&rng {
+	status = "okay";
+};

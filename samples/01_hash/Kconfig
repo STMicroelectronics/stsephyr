@@ -1,0 +1,28 @@
+# Copyright (c) 2026 STMicroelectronics
+# SPDX-License-Identifier: Apache-2.0
+
+mainmenu "STSAFE-A120 hash sample"
+
+choice SAMPLE_HASH_ALGORITHM
+	prompt "Hash algorithm"
+	default SAMPLE_HASH_SHA256
+
+config SAMPLE_HASH_SHA256
+	bool "SHA-256"
+	select STSEPHYR_HASH_SHA256
+
+config SAMPLE_HASH_SHA3_256
+	bool "SHA3-256"
+	select STSEPHYR_HASH_SHA3_256
+
+config SAMPLE_HASH_SHA3_384
+	bool "SHA3-384"
+	select STSEPHYR_HASH_SHA3_384
+
+config SAMPLE_HASH_SHA3_512
+	bool "SHA3-512"
+	select STSEPHYR_HASH_SHA3_512
+
+endchoice
+
+source "Kconfig.zephyr"

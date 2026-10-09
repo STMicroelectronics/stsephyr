@@ -1,0 +1,21 @@
+sample:
+  name: STSAFE-A120 device authentication
+  description: Verify the device certificate chain and, optionally, slot 0 key possession
+
+common:
+  tags: [security, i2c, stsafe]
+  platform_allow: [nucleo_l452re]
+  integration_platforms: [nucleo_l452re]
+  extra_args: [SHIELD=x_nucleo_ese01a1]
+
+tests:
+  sample.stsephyr.device_authentication:
+    harness: console
+    harness_config:
+      type: one_line
+      regex: ["DONE: certificate chain verified"]
+      fixture: stsafe_a120
+  sample.stsephyr.device_authentication.signature:
+    build_only: true
+    extra_configs:
+      - CONFIG_SAMPLE_STSAFE_ALLOW_SIGNATURE=y

@@ -1,0 +1,16 @@
+BasedOnStyle: LLVM
+AlignConsecutiveMacros: AcrossComments
+AllowShortBlocksOnASingleLine: Never
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+BreakBeforeBraces: Linux
+ContinuationIndentWidth: 8
+ForEachMacros:
+  - DT_INST_FOREACH_STATUS_OKAY
+IndentWidth: 8
+UseTab: Always
+ColumnLimit: 100
+SortIncludes: CaseSensitive
